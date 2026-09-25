@@ -19,7 +19,6 @@ final List<ShowcaseItem> showcaseItems = [
           pacmanSize: 26,
           dotCount: 8,
           totalDuration: Duration(seconds: 4),
-          color: Color(0xFFFACC15),
           showsPercentage: false,
         ),
       );
@@ -32,7 +31,6 @@ final List<ShowcaseItem> showcaseItems = [
             pacmanSize: 34.0,
             dotCount: 12,
             totalDuration: Duration(milliseconds: 4500),
-            color: Color(0xFFFACC15),
             showsPercentage: true,
           ),
         ),

@@ -164,7 +164,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final item = _filteredItems[index];
-                      return _ShowcaseCard(item: item);
+                      return _ShowcaseCard(
+                        item: item,
+                        onToggleTheme: widget.onToggleTheme,
+                      );
                     },
                     childCount: _filteredItems.length,
                   ),
@@ -180,8 +183,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
 class _ShowcaseCard extends StatelessWidget {
   final ShowcaseItem item;
+  final VoidCallback onToggleTheme;
 
-  const _ShowcaseCard({required this.item});
+  const _ShowcaseCard({
+    required this.item,
+    required this.onToggleTheme,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +199,10 @@ class _ShowcaseCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => ItemDetailScreen(item: item),
+            builder: (_) => ItemDetailScreen(
+              item: item,
+              onToggleTheme: onToggleTheme,
+            ),
           ),
         );
       },

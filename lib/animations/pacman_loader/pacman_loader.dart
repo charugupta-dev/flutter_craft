@@ -57,8 +57,9 @@ class _PacmanLoaderState extends State<PacmanLoader>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final effectiveColor =
-        widget.color ?? Theme.of(context).colorScheme.primary;
+        widget.color ?? (isDark ? Colors.white : Colors.black);
     final dotCount = math.max(2, widget.dotCount);
     final pacmanSize = math.max(8.0, widget.pacmanSize);
 
