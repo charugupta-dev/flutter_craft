@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../animations/pacman_loader/pacman_loader.dart';
+import '../../animations/spring_text/spring_text.dart';
 import '../models/showcase_item.dart';
 
 final List<ShowcaseItem> showcaseItems = [
@@ -41,8 +42,46 @@ PacmanLoader(
   totalDuration: Duration(milliseconds: 4500),
   dotCount: 12,
   pacmanSize: 34.0,
-  color: Color(0xFFFACC15),
   showsPercentage: true,
+)
+''',
+  ),
+  ShowcaseItem(
+    id: 'spring-text',
+    title: 'Spring Text',
+    description:
+        'A line of text that bends under a vertical drag and springs back on release.',
+    category: ShowcaseCategory.animations,
+    tags: ['Gestures', 'Spring', 'Interactive', 'Physics', 'Text'],
+    sourceFilePath: 'lib/animations/spring_text/spring_text.dart',
+    previewBuilder: (context) {
+      return const Center(
+        child: SpringText(
+          'Spring Text',
+          fontSize: 24,
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        ),
+      );
+    },
+    playgroundBuilder: (context) {
+      return const Center(
+        child: SpringText(
+          'Spring Text',
+          fontSize: 42,
+          maxDrag: 180,
+          curveStrength: 0.70,
+          bounce: 0.70,
+          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 140),
+        ),
+      );
+    },
+    codeSnippet: '''
+SpringText(
+  'Spring Text',
+  fontSize: 42,
+  maxDrag: 180,
+  curveStrength: 0.70,
+  bounce: 0.70,
 )
 ''',
   ),
