@@ -18,9 +18,11 @@ class ItemDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          item.title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          tooltip: 'Back',
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+          onPressed: () => Navigator.of(context).maybePop(),
         ),
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -30,6 +32,7 @@ class ItemDetailScreen extends StatelessWidget {
             tooltip: 'Toggle Theme',
             icon: Icon(
               isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+              size: 22,
             ),
             onPressed: onToggleTheme,
           ),

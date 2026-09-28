@@ -26,6 +26,7 @@ class _FlutterCraftAppState extends State<FlutterCraftApp> {
   @override
   Widget build(BuildContext context) {
     const primaryColor = Color(0xFFFACC15); // Vibrant Pacman / Craft Accent
+    const lightWarmBg = Color(0xFFEEEAE3); // Reference warm yellowish off-white
 
     return MaterialApp(
       title: 'Flutter Craft',
@@ -34,13 +35,14 @@ class _FlutterCraftAppState extends State<FlutterCraftApp> {
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
-        scaffoldBackgroundColor: const Color(0xFFF9FAFB),
+        scaffoldBackgroundColor: lightWarmBg,
         colorScheme: ColorScheme.fromSeed(
           seedColor: primaryColor,
           brightness: Brightness.light,
+          surface: lightWarmBg,
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFF9FAFB),
+          backgroundColor: lightWarmBg,
           surfaceTintColor: Colors.transparent,
           elevation: 0,
         ),

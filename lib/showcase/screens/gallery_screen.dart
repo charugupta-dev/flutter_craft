@@ -109,7 +109,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                       filled: true,
                       fillColor: isDark
                           ? const Color(0xFF1E1E24)
-                          : const Color(0xFFF1F1F5),
+                          : const Color(0xFFE4DFD6),
                       contentPadding: const EdgeInsets.symmetric(vertical: 12),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -229,7 +229,7 @@ class _ShowcaseCard extends StatelessWidget {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF101012) : const Color(0xFFF9F9FB),
+                  color: isDark ? const Color(0xFF101012) : const Color(0xFFEEEAE3),
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(20)),
                 ),

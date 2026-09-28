@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_craft/main.dart';
 import 'package:flutter_craft/animations/pacman_loader/pacman_loader.dart';
 import 'package:flutter_craft/animations/spring_text/spring_text.dart';
+import 'package:flutter_craft/showcase/data/showcase_data.dart';
+import 'package:flutter_craft/showcase/screens/item_detail_screen.dart';
 
 void main() {
   testWidgets('FlutterCraftApp smoke test - verifies gallery and items',
@@ -13,6 +15,37 @@ void main() {
     expect(find.byType(SpringText), findsWidgets);
   });
 
+  testWidgets(
+      'ItemDetailScreen displays clean view with only corner buttons and centered animation',
+      (WidgetTester tester) async {
+    final springItem = showcaseItems.firstWhere((i) => i.id == 'spring-text');
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData(
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: const Color(0xFFEEEAE3),
+        ),
+        home: ItemDetailScreen(
+          item: springItem,
+          onToggleTheme: () {},
+        ),
+      ),
+    );
+
+    // No title in the AppBar
+    final appBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect(appBar.title, isNull);
+
+    // Leading corner has back button
+    expect(find.byTooltip('Back'), findsOneWidget);
+
+    // Trailing corner has theme toggle button
+    expect(find.byTooltip('Toggle Theme'), findsOneWidget);
+
+    // Centered animation is present
+    expect(find.byType(SpringText), findsOneWidget);
+  });
+
   testWidgets('SpringText renders characters and responds to drag gesture',
       (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -21,7 +54,7 @@ void main() {
           body: Center(
             child: SpringText(
               'Spring Text',
-              fontSize: 36,
+              fontSize: 32,
             ),
           ),
         ),
