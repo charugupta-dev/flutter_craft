@@ -29,8 +29,8 @@ const BreathingLoader(
   breathingSpeed: 1.5,
   rotationSpeed: 0.35,
   dotSize: 5.0,
-  primaryColor: Color(0xFF007AFF),
-  secondaryColor: Color(0xFFFF9500),
+  primaryColor: Color(0xFFFBBF24),
+  secondaryColor: Color(0xFFFB7185),
 );
 ```
 
@@ -44,8 +44,8 @@ const BreathingLoader(
 | `breathingSpeed` | `double` | `1.25` | Speed multiplier for expansion and contraction (clamped 0.5 to 2.5). |
 | `rotationSpeed` | `double` | `0.25` | Speed multiplier for continuous Y-axis rotation (clamped 0.0 to 1.0). |
 | `dotSize` | `double` | `4.0` | Base diameter of individual particles (clamped 3.0 to 14.0). |
-| `primaryColor` | `Color` | `Color(0xFF007AFF)` | Color of alternating particles (iOS electric blue). |
-| `secondaryColor` | `Color` | `Color(0xFFFF9500)` | Color of alternating particles (iOS sunset orange). |
+| `primaryColor` | `Color?` | Adaptive: `#FBBF24` (dark) / `#D97706` (light) | Color of alternating particles (Solar Amber). |
+| `secondaryColor` | `Color?` | Adaptive: `#FB7185` (dark) / `#E11D48` (light) | Color of alternating particles (Coral Rose). |
 | `isAnimating` | `bool` | `true` | Whether the loader animation is actively running. |
 | `width` | `double?` | `null` | Optional fixed width constraint. |
 | `height` | `double?` | `null` | Optional fixed height constraint. |

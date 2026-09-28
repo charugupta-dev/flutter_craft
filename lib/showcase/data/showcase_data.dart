@@ -120,8 +120,8 @@ BreathingLoader(
   breathingSpeed: 1.25,
   rotationSpeed: 0.25,
   dotSize: 4.0,
-  primaryColor: Color(0xFF007AFF),
-  secondaryColor: Color(0xFFFF9500),
+  primaryColor: Color(0xFFFBBF24),
+  secondaryColor: Color(0xFFFB7185),
 )
 ''',
   ),
