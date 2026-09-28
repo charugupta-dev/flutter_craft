@@ -58,7 +58,7 @@ PacmanLoader(
       return const Center(
         child: SpringText(
           'Spring Text',
-          fontSize: 24,
+          fontSize: 18,
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         ),
       );
@@ -67,8 +67,8 @@ PacmanLoader(
       return const Center(
         child: SpringText(
           'Spring Text',
-          fontSize: 42,
-          maxDrag: 180,
+          fontSize: 26,
+          maxDrag: 160,
           curveStrength: 0.70,
           bounce: 0.70,
           padding: EdgeInsets.symmetric(horizontal: 40, vertical: 140),
@@ -78,8 +78,8 @@ PacmanLoader(
     codeSnippet: '''
 SpringText(
   'Spring Text',
-  fontSize: 42,
-  maxDrag: 180,
+  fontSize: 26,
+  maxDrag: 160,
   curveStrength: 0.70,
   bounce: 0.70,
 )

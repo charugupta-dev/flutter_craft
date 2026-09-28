@@ -12,7 +12,7 @@ class SpringText extends StatefulWidget {
   /// The text string to display and animate.
   final String text;
 
-  /// Font size for the text (clamped between 20.0 and 72.0).
+  /// Font size for the text (clamped between 12.0 and 72.0).
   final double fontSize;
 
   /// Color of the text. If null, automatically uses White in Dark Mode
@@ -41,7 +41,7 @@ class SpringText extends StatefulWidget {
   const SpringText(
     this.text, {
     super.key,
-    this.fontSize = 40.0,
+    this.fontSize = 28.0,
     this.color,
     this.textStyle,
     this.maxDrag = 180.0,
@@ -151,7 +151,7 @@ class _SpringTextState extends State<SpringText>
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final effectiveColor =
         widget.color ?? (isDark ? Colors.white : Colors.black);
-    final clampedFontSize = widget.fontSize.clamp(20.0, 72.0);
+    final clampedFontSize = widget.fontSize.clamp(12.0, 72.0);
     final clampedCurveStrength = widget.curveStrength.clamp(0.2, 1.0);
 
     final effectiveTextStyle = (widget.textStyle ?? const TextStyle()).copyWith(

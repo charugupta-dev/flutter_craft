@@ -21,14 +21,14 @@ Simply copy `spring_text.dart` into your project and use it:
 ```dart
 import 'spring_text.dart';
 
-// Basic usage (adaptive white/black theme)
+// Basic usage (adaptive white/black theme, default 28pt)
 const SpringText('Spring Text');
 
 // Customized usage
 const SpringText(
   'Spring Text',
-  fontSize: 48.0,
-  maxDrag: 180.0,
+  fontSize: 26.0,
+  maxDrag: 160.0,
   curveStrength: 0.70,
   bounce: 0.75,
   color: Colors.white,
@@ -42,7 +42,7 @@ const SpringText(
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `text` | `String` | *required* | The text string to bend and animate. |
-| `fontSize` | `double` | `40.0` | Font size (clamped between 20.0 and 72.0). |
+| `fontSize` | `double` | `28.0` | Font size (clamped between 12.0 and 72.0). |
 | `color` | `Color?` | `null` | Text color. When null, adapts to White (Dark Mode) or Black (Light Mode). |
 | `textStyle` | `TextStyle?` | `null` | Optional custom `TextStyle` applied to characters. |
 | `maxDrag` | `double` | `180.0` | Maximum vertical displacement in points (clamped 60 to 260). |
