@@ -157,6 +157,9 @@ class _SpringTextState extends State<SpringText>
     final effectiveTextStyle = (widget.textStyle ?? const TextStyle()).copyWith(
       fontSize: clampedFontSize,
       fontWeight: widget.textStyle?.fontWeight ?? FontWeight.w900,
+      fontFamily: widget.textStyle?.fontFamily ?? '.SF Pro Rounded',
+      fontFamilyFallback: widget.textStyle?.fontFamilyFallback ??
+          const ['SF Pro Rounded', 'Arial Rounded MT Bold', 'sans-serif'],
       color: effectiveColor,
       letterSpacing: widget.textStyle?.letterSpacing ?? -0.5,
     );

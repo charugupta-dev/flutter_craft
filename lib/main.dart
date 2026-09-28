@@ -14,7 +14,7 @@ class FlutterCraftApp extends StatefulWidget {
 }
 
 class _FlutterCraftAppState extends State<FlutterCraftApp> {
-  ThemeMode _themeMode = ThemeMode.dark;
+  ThemeMode _themeMode = ThemeMode.light;
 
   void _toggleTheme() {
     setState(() {
