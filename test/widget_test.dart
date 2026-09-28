@@ -45,9 +45,11 @@ void main() {
     // Leading corner has back button
     expect(find.byTooltip('Back'), findsOneWidget);
 
-    // Trailing corner has Flutter Craft text and theme toggle button
-    expect(find.text('Flutter Craft'), findsOneWidget);
+    // Trailing corner has theme toggle button
     expect(find.byTooltip('Toggle Theme'), findsOneWidget);
+
+    // No Flutter Craft text on detail screen (distraction-free)
+    expect(find.text('Flutter Craft'), findsNothing);
 
     // Centered animation is present
     expect(find.byType(SpringText), findsOneWidget);

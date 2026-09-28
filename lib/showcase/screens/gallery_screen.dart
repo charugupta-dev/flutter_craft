@@ -44,30 +44,13 @@ class _GalleryScreenState extends State<GalleryScreen> {
           SliverAppBar(
             floating: true,
             pinned: true,
-            expandedHeight: 130,
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              title: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primary,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(Icons.auto_awesome, color: Colors.white, size: 16),
-                  ),
-                  const SizedBox(width: 10),
-                  const Text(
-                    'Flutter Craft',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.5,
-                      fontSize: 19,
-                    ),
-                  ),
-                ],
+            centerTitle: true,
+            title: const Text(
+              'Flutter Craft',
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.5,
+                fontSize: 18,
               ),
             ),
             actions: [

@@ -28,16 +28,6 @@ class ItemDetailScreen extends StatelessWidget {
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
         actions: [
-          Text(
-            'Flutter Craft',
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-              letterSpacing: -0.3,
-              color: isDark ? Colors.white70 : Colors.black87,
-            ),
-          ),
-          const SizedBox(width: 4),
           IconButton(
             tooltip: 'Toggle Theme',
             icon: Icon(
