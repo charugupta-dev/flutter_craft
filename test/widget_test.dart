@@ -4,6 +4,7 @@ import 'package:flutter_craft/main.dart';
 import 'package:flutter_craft/animations/pacman_loader/pacman_loader.dart';
 import 'package:flutter_craft/animations/spring_text/spring_text.dart';
 import 'package:flutter_craft/animations/breathing_loader/breathing_loader.dart';
+import 'package:flutter_craft/animations/fan_stack/fan_stack.dart';
 import 'package:flutter_craft/showcase/data/showcase_data.dart';
 import 'package:flutter_craft/showcase/screens/item_detail_screen.dart';
 
@@ -12,13 +13,14 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(const FlutterCraftApp());
     expect(find.text('Flutter Craft'), findsOneWidget);
+    expect(find.byType(BreathingLoader), findsWidgets);
+    expect(find.byType(FanStack), findsWidgets);
+
+    // Scroll down to bring remaining items into view
+    await tester.drag(find.byType(CustomScrollView), const Offset(0, -400));
+    await tester.pump();
     expect(find.byType(PacmanLoader), findsWidgets);
     expect(find.byType(SpringText), findsWidgets);
-
-    // Scroll down to bring third item into view
-    await tester.drag(find.byType(CustomScrollView), const Offset(0, -300));
-    await tester.pump();
-    expect(find.byType(BreathingLoader), findsWidgets);
   });
 
   testWidgets(
