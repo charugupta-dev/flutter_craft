@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../animations/pacman_loader/pacman_loader.dart';
 import '../../animations/spring_text/spring_text.dart';
+import '../../animations/breathing_loader/breathing_loader.dart';
 import '../models/showcase_item.dart';
 
 final List<ShowcaseItem> showcaseItems = [
@@ -82,6 +83,45 @@ SpringText(
   maxDrag: 180,
   curveStrength: 0.70,
   bounce: 0.70,
+)
+''',
+  ),
+  ShowcaseItem(
+    id: 'breathing-loader',
+    title: 'Breathing Loader',
+    description:
+        'A transparent 3D particle sphere that expands, drifts, and rotates with continuous perspective depth.',
+    category: ShowcaseCategory.animations,
+    tags: ['3D', 'Particles', 'Loader', 'Math', 'CustomPainter'],
+    sourceFilePath: 'lib/animations/breathing_loader/breathing_loader.dart',
+    previewBuilder: (context) {
+      return const Center(
+        child: BreathingLoader(
+          sphereSize: 90,
+          dotSize: 3.5,
+          width: 180,
+          height: 180,
+        ),
+      );
+    },
+    playgroundBuilder: (context) {
+      return const Center(
+        child: BreathingLoader(
+          sphereSize: 140,
+          breathingSpeed: 1.25,
+          rotationSpeed: 0.25,
+          dotSize: 4.0,
+        ),
+      );
+    },
+    codeSnippet: '''
+BreathingLoader(
+  sphereSize: 140,
+  breathingSpeed: 1.25,
+  rotationSpeed: 0.25,
+  dotSize: 4.0,
+  primaryColor: Color(0xFF007AFF),
+  secondaryColor: Color(0xFFFF9500),
 )
 ''',
   ),
