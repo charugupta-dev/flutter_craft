@@ -75,6 +75,60 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
   });
 
+  testWidgets('BreathingLoader adapts default colors to Light mode',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.light(),
+        home: const Scaffold(
+          body: Center(
+            child: BreathingLoader(
+              sphereSize: 100,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    final customPainterFinder = find.descendant(
+      of: find.byType(BreathingLoader),
+      matching: find.byType(CustomPaint),
+    );
+    expect(customPainterFinder, findsWidgets);
+
+    final customPaint = tester.widget<CustomPaint>(customPainterFinder.first);
+    final painter = customPaint.painter as dynamic;
+    expect(painter.primaryColor, const Color(0xFFD97706));
+    expect(painter.secondaryColor, const Color(0xFFE11D48));
+  });
+
+  testWidgets('BreathingLoader adapts default colors to Dark mode',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(),
+        home: const Scaffold(
+          body: Center(
+            child: BreathingLoader(
+              sphereSize: 100,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    final customPainterFinder = find.descendant(
+      of: find.byType(BreathingLoader),
+      matching: find.byType(CustomPaint),
+    );
+    expect(customPainterFinder, findsWidgets);
+
+    final customPaint = tester.widget<CustomPaint>(customPainterFinder.first);
+    final painter = customPaint.painter as dynamic;
+    expect(painter.primaryColor, const Color(0xFFFBBF24));
+    expect(painter.secondaryColor, const Color(0xFFFB7185));
+  });
+
   testWidgets('SpringText renders characters and responds to drag gesture',
       (WidgetTester tester) async {
     await tester.pumpWidget(

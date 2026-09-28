@@ -17,11 +17,11 @@ class BreathingLoader extends StatefulWidget {
   /// Base diameter of each particle in points (clamped between 3.0 and 14.0).
   final double dotSize;
 
-  /// Primary color used for alternating particles (defaults to iOS electric blue).
-  final Color primaryColor;
+  /// Primary color used for alternating particles (defaults to Solar Amber).
+  final Color? primaryColor;
 
-  /// Secondary color used for alternating particles (defaults to iOS sunset orange).
-  final Color secondaryColor;
+  /// Secondary color used for alternating particles (defaults to Coral Rose).
+  final Color? secondaryColor;
 
   /// Whether the animation is currently active.
   final bool isAnimating;
@@ -38,8 +38,8 @@ class BreathingLoader extends StatefulWidget {
     this.breathingSpeed = 1.25,
     this.rotationSpeed = 0.25,
     this.dotSize = 4.0,
-    this.primaryColor = const Color(0xFF007AFF),
-    this.secondaryColor = const Color(0xFFFF9500),
+    this.primaryColor,
+    this.secondaryColor,
     this.isAnimating = true,
     this.width,
     this.height,
@@ -96,6 +96,18 @@ class _BreathingLoaderState extends State<BreathingLoader>
     final reduceMotion =
         MediaQuery.maybeOf(context)?.disableAnimations ?? false;
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final defaultPrimary = isDark
+        ? const Color(0xFFFBBF24) // Golden Amber 400
+        : const Color(0xFFD97706); // Sunset Amber 600
+
+    final defaultSecondary = isDark
+        ? const Color(0xFFFB7185) // Coral Rose 400
+        : const Color(0xFFE11D48); // Deep Rose 600
+
+    final effectivePrimary = widget.primaryColor ?? defaultPrimary;
+    final effectiveSecondary = widget.secondaryColor ?? defaultSecondary;
+
     final sphereSize =
         (widget.sphereSize.isFinite ? widget.sphereSize : 140.0)
             .clamp(80.0, 200.0);
@@ -130,8 +142,8 @@ class _BreathingLoaderState extends State<BreathingLoader>
               breathingSpeed: breathingSpeed,
               rotationSpeed: rotationSpeed,
               dotSize: dotSize,
-              primaryColor: widget.primaryColor,
-              secondaryColor: widget.secondaryColor,
+              primaryColor: effectivePrimary,
+              secondaryColor: effectiveSecondary,
               particles: _particles,
             ),
           );
