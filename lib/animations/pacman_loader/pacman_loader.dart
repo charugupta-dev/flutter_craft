@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 /// A delightful Pacman loader where Pacman munches dots across a track with live progress.
 ///
-/// Crafted by Charu for `flutter_craft`.
 /// Self-contained widget with zero external dependencies.
 class PacmanLoader extends StatefulWidget {
   final Duration totalDuration;

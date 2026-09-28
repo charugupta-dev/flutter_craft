@@ -5,8 +5,6 @@ import 'package:flutter/physics.dart';
 /// A delightful line of text that bends under a vertical drag gesture
 /// and springs back with realistic physics upon release.
 ///
-/// Inspired by WithAnimation (https://www.withanimation.app/library/spring-text).
-/// Crafted by Charu for `flutter_craft`.
 /// Self-contained widget with zero external dependencies.
 class SpringText extends StatefulWidget {
   /// The text string to display and animate.

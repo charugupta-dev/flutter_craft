@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 /// A transparent particle sphere that expands, drifts, and rotates in three dimensions.
 ///
-/// Ported faithfully from WithAnimation (https://www.withanimation.app/library/breathing-loader).
-/// Crafted by Charu for `flutter_craft`.
 /// Self-contained widget with zero external dependencies.
 class BreathingLoader extends StatefulWidget {
   /// Authored diameter of the particle sphere (clamped between 80.0 and 200.0).

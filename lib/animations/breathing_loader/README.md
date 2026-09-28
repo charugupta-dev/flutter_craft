@@ -2,8 +2,6 @@
 
 A transparent 3D particle sphere that expands, drifts, and rotates in three dimensions with continuous perspective depth.
 
-Crafted by **Charu** for `flutter_craft`.
-
 ---
 
 ## Features

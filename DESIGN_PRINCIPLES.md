@@ -48,5 +48,3 @@ Whenever building or refining a component for `flutter_craft`, adhere to these f
 * Interactive previews in the gallery grid should allow direct touch feedback where applicable.
 
 ---
-
-Crafted by **Charu** for `flutter_craft`.

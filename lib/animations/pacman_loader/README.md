@@ -2,8 +2,6 @@
 
 A smooth, delightful Pacman loading animation where Pacman munches dots across a track with live progress percentage.
 
-Crafted by **Charu** for `flutter_craft`.
-
 ---
 
 ## Features

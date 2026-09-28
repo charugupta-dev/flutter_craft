@@ -2,8 +2,6 @@
 
 A tactile, playful line of text that bends under vertical drag gestures and springs back with realistic physics upon release.
 
-Crafted by **Charu** for `flutter_craft`.
-
 ---
 
 ## Features
