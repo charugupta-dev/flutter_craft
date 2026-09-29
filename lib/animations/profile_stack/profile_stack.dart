@@ -4,11 +4,11 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// Style configuration for [FanStack].
+/// Style configuration for [ProfileStack].
 ///
 /// Provides default Studio Ceramic palette and adaptive environment tokens
 /// for light and dark themes.
-class FanStackStyle {
+class ProfileStackStyle {
   /// Palette used to deterministically tint avatar initials tiles.
   final List<Color> colors;
 
@@ -34,7 +34,7 @@ class FanStackStyle {
   /// Text ink for the floating full-name capsule tag.
   final Color? tagInk;
 
-  const FanStackStyle({
+  const ProfileStackStyle({
     this.colors = const [
       Color(0xFFE06D53), // Terracotta Rust
       Color(0xFF5E9CAE), // Aegean Slate Blue
@@ -52,14 +52,14 @@ class FanStackStyle {
     this.tagInk,
   });
 
-  static const studioCeramic = FanStackStyle();
+  static const studioCeramic = ProfileStackStyle();
 
   /// Resolves style tokens against the current [BuildContext] theme brightness.
-  FanStackResolvedStyle resolve(BuildContext context) {
+  ProfileStackResolvedStyle resolve(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark ||
         theme.colorScheme.brightness == Brightness.dark;
-    return FanStackResolvedStyle(
+    return ProfileStackResolvedStyle(
       colors: colors,
       ink: ink,
       ring: ring ?? (isDark ? const Color(0xFF0F0F12) : const Color(0xFFEEEAE3)),
@@ -77,8 +77,8 @@ class FanStackStyle {
   }
 }
 
-/// Resolved concrete colors for rendering [FanStack].
-class FanStackResolvedStyle {
+/// Resolved concrete colors for rendering [ProfileStack].
+class ProfileStackResolvedStyle {
   final List<Color> colors;
   final Color ink;
   final Color ring;
@@ -88,7 +88,7 @@ class FanStackResolvedStyle {
   final Color tagFill;
   final Color tagInk;
 
-  const FanStackResolvedStyle({
+  const ProfileStackResolvedStyle({
     required this.colors,
     required this.ink,
     required this.ring,
@@ -105,7 +105,7 @@ class FanStackResolvedStyle {
 /// In its collapsed state, avatars overlap with cut-out borders and an overflow
 /// badge. When tapped or held, avatars fan open with staggered spring physics,
 /// allowing live scrubbing, floating capsule name inspection, and selection.
-class FanStack extends StatefulWidget {
+class ProfileStack extends StatefulWidget {
   /// List of person names to display in the avatar group.
   final List<String> names;
 
@@ -131,9 +131,9 @@ class FanStack extends StatefulWidget {
   final ValueChanged<bool>? onFannedChanged;
 
   /// Visual styling configuration.
-  final FanStackStyle? style;
+  final ProfileStackStyle? style;
 
-  const FanStack({
+  const ProfileStack({
     super.key,
     required this.names,
     this.images,
@@ -147,10 +147,10 @@ class FanStack extends StatefulWidget {
   });
 
   @override
-  State<FanStack> createState() => _FanStackState();
+  State<ProfileStack> createState() => _ProfileStackState();
 }
 
-class _FanStackState extends State<FanStack>
+class _ProfileStackState extends State<ProfileStack>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   bool _internalIsFanned = false;
@@ -181,7 +181,7 @@ class _FanStackState extends State<FanStack>
   }
 
   @override
-  void didUpdateWidget(FanStack oldWidget) {
+  void didUpdateWidget(ProfileStack oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.isFanned != null && widget.isFanned != oldWidget.isFanned) {
       if (widget.isFanned!) {
@@ -422,7 +422,7 @@ class _FanStackState extends State<FanStack>
   Widget _buildAvatarCircle({
     required int index,
     required String name,
-    required FanStackResolvedStyle style,
+    required ProfileStackResolvedStyle style,
     required bool isHovered,
     required bool disableAnimations,
     required double size,
@@ -459,7 +459,7 @@ class _FanStackState extends State<FanStack>
           ];
 
     return Container(
-      key: ValueKey('fan_avatar_$index'),
+      key: ValueKey('profile_avatar_$index'),
       width: size,
       height: size,
       decoration: BoxDecoration(
@@ -488,11 +488,11 @@ class _FanStackState extends State<FanStack>
 
   Widget _buildOverflowPill({
     required int count,
-    required FanStackResolvedStyle style,
+    required ProfileStackResolvedStyle style,
     required double size,
   }) {
     return Container(
-      key: const ValueKey('fan_overflow_pill'),
+      key: const ValueKey('profile_overflow_pill'),
       width: size,
       height: size,
       decoration: BoxDecoration(
@@ -523,7 +523,7 @@ class _FanStackState extends State<FanStack>
     );
   }
 
-  Widget _buildCaption(FanStackResolvedStyle style, String name) {
+  Widget _buildCaption(ProfileStackResolvedStyle style, String name) {
     final firstName = _extractFirstName(name);
     return SizedBox(
       width: widget.size + 24,
@@ -542,7 +542,7 @@ class _FanStackState extends State<FanStack>
     );
   }
 
-  Widget _buildNameTag(FanStackResolvedStyle style, String name) {
+  Widget _buildNameTag(ProfileStackResolvedStyle style, String name) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
@@ -572,7 +572,7 @@ class _FanStackState extends State<FanStack>
   @override
   Widget build(BuildContext context) {
     final style =
-        (widget.style ?? FanStackStyle.studioCeramic).resolve(context);
+        (widget.style ?? ProfileStackStyle.studioCeramic).resolve(context);
     final disableAnimations =
         MediaQuery.maybeOf(context)?.disableAnimations ?? false;
 

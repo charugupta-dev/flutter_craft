@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_craft/animations/fan_stack/fan_stack.dart';
+import 'package:flutter_craft/animations/profile_stack/profile_stack.dart';
 
 void main() {
   const testNames = [
@@ -12,13 +12,13 @@ void main() {
     'Kenji Sato',
   ];
 
-  testWidgets('FanStack renders collapsed with visible avatars and overflow pill',
+  testWidgets('ProfileStack renders collapsed with visible avatars and overflow pill',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
           body: Center(
-            child: FanStack(
+            child: ProfileStack(
               names: testNames,
               size: 48,
               max: 4,
@@ -41,13 +41,13 @@ void main() {
     expect(find.text('Priya'), findsNothing);
   });
 
-  testWidgets('FanStack fans open on tap showing all avatars and first-name captions',
+  testWidgets('ProfileStack fans open on tap showing all avatars and first-name captions',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: Scaffold(
           body: Center(
-            child: FanStack(
+            child: ProfileStack(
               names: testNames,
               size: 48,
               max: 4,
@@ -58,7 +58,7 @@ void main() {
     );
 
     // Tap to expand
-    await tester.tap(find.byType(FanStack));
+    await tester.tap(find.byType(ProfileStack));
     await tester.pumpAndSettle();
 
     // All initials visible
@@ -85,7 +85,7 @@ void main() {
       MaterialApp(
         home: Scaffold(
           body: Center(
-            child: FanStack(
+            child: ProfileStack(
               names: testNames,
               size: 48,
               onSelect: (name) => selectedName = name,
@@ -96,7 +96,7 @@ void main() {
     );
 
     // Fan open
-    await tester.tap(find.byType(FanStack));
+    await tester.tap(find.byType(ProfileStack));
     await tester.pumpAndSettle();
 
     // Tap on Priya
@@ -109,7 +109,7 @@ void main() {
     expect(find.text('Priya'), findsNothing);
   });
 
-  testWidgets('FanStack adapts cut-out ring and labels across light and dark themes',
+  testWidgets('ProfileStack adapts cut-out ring and labels across light and dark themes',
       (WidgetTester tester) async {
     // Light mode test
     await tester.pumpWidget(
@@ -118,7 +118,7 @@ void main() {
           data: ThemeData.light(),
           child: const Scaffold(
             body: Center(
-              child: FanStack(
+              child: ProfileStack(
                 key: ValueKey('light_stack'),
                 names: testNames,
                 size: 48,
@@ -136,13 +136,13 @@ void main() {
 
     // Check light mode cut-out ring
     final lightAvatarContainer = tester.widget<Container>(
-      find.byKey(const ValueKey('fan_avatar_0')),
+      find.byKey(const ValueKey('profile_avatar_0')),
     );
     final lightDec = lightAvatarContainer.decoration as BoxDecoration;
     expect(lightDec.border?.top.color, const Color(0xFFEEEAE3));
 
     // Tap to open in light mode and inspect caption color
-    await tester.tap(find.byType(FanStack));
+    await tester.tap(find.byType(ProfileStack));
     await tester.pumpAndSettle();
 
     final lightCaption = tester.widget<Text>(find.text('Priya'));
@@ -155,7 +155,7 @@ void main() {
           data: ThemeData.dark(),
           child: const Scaffold(
             body: Center(
-              child: FanStack(
+              child: ProfileStack(
                 key: ValueKey('dark_stack'),
                 names: testNames,
                 size: 48,
@@ -173,27 +173,27 @@ void main() {
 
     // Check dark mode cut-out ring
     final darkAvatarContainer = tester.widget<Container>(
-      find.byKey(const ValueKey('fan_avatar_0')),
+      find.byKey(const ValueKey('profile_avatar_0')),
     );
     final darkDec = darkAvatarContainer.decoration as BoxDecoration;
     expect(darkDec.border?.top.color, const Color(0xFF0F0F12));
 
     // Tap to open in dark mode and inspect caption color
-    await tester.tap(find.byType(FanStack));
+    await tester.tap(find.byType(ProfileStack));
     await tester.pumpAndSettle();
 
     final darkCaption = tester.widget<Text>(find.text('Priya'));
     expect(darkCaption.style?.color, const Color(0xFFA6A49F));
   });
 
-  testWidgets('FanStack scrubbing selects avatar on pointer release',
+  testWidgets('ProfileStack scrubbing selects avatar on pointer release',
       (WidgetTester tester) async {
     String? selectedName;
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: Center(
-            child: FanStack(
+            child: ProfileStack(
               names: testNames,
               size: 48,
               onSelect: (name) => selectedName = name,
@@ -205,7 +205,7 @@ void main() {
 
     // Hold for 300ms to open fan and engage scrub
     final gesture = await tester.startGesture(
-      tester.getCenter(find.byType(FanStack)),
+      tester.getCenter(find.byType(ProfileStack)),
     );
     await tester.pump(const Duration(milliseconds: 350));
     await tester.pumpAndSettle();
@@ -221,7 +221,7 @@ void main() {
     expect(selectedName, isNotNull);
   });
 
-  testWidgets('FanStack respects reduced motion accessibility settings',
+  testWidgets('ProfileStack respects reduced motion accessibility settings',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
@@ -229,7 +229,7 @@ void main() {
           data: MediaQueryData(disableAnimations: true),
           child: Scaffold(
             body: Center(
-              child: FanStack(
+              child: ProfileStack(
                 names: testNames,
                 size: 48,
               ),
@@ -240,7 +240,7 @@ void main() {
     );
 
     // Tap to open
-    await tester.tap(find.byType(FanStack));
+    await tester.tap(find.byType(ProfileStack));
     await tester.pumpAndSettle();
 
     // Captions visible

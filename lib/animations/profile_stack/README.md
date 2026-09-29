@@ -1,4 +1,4 @@
-# Fan Stack
+# Profile Stack
 
 An interactive avatar group control that sits in an overlapping chain and springs open into a selectable horizontal fan with live scrubbing, floating capsule name tags, and an original Studio Ceramic palette.
 
@@ -16,13 +16,13 @@ An interactive avatar group control that sits in an overlapping chain and spring
 
 ## Usage
 
-Simply copy `fan_stack.dart` into your project and use it:
+Simply copy `profile_stack.dart` into your project and use it:
 
 ```dart
-import 'fan_stack.dart';
+import 'profile_stack.dart';
 
 // Basic usage with names
-FanStack(
+ProfileStack(
   names: const [
     'Priya Raman',
     'Jonas Weber',
@@ -37,7 +37,7 @@ FanStack(
 );
 
 // Custom avatar images with initials fallback
-FanStack(
+ProfileStack(
   names: const ['Alex Chen', 'Samira Khan'],
   avatars: const [
     NetworkImage('https://example.com/avatar1.jpg'),
@@ -51,7 +51,7 @@ FanStack(
 
 ## Parameters
 
-### FanStack
+### ProfileStack
 
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
@@ -61,11 +61,11 @@ FanStack(
 | `max` | `int` | `4` | Maximum avatars shown in the collapsed stack before the `+N` pill (clamped >= 1). |
 | `spacing` | `double?` | `null` | Horizontal spacing between avatar centers when fanned open (defaults to `size + 14`). |
 | `overlap` | `double?` | `null` | Center-to-center offset between avatars in collapsed stack (defaults to `size * 0.44`). |
-| `style` | `FanStackStyle` | `FanStackStyle.studioCeramic` | Visual style token configuration (palette, ring, tag fills, ink). |
+| `style` | `ProfileStackStyle` | `ProfileStackStyle.studioCeramic` | Visual style token configuration (palette, ring, tag fills, ink). |
 | `onSelect` | `ValueChanged<String>?` | `null` | Callback invoked with the selected participant name upon tap or scrub release. |
 | `onFanStateChanged` | `ValueChanged<bool>?` | `null` | Callback invoked when the fan stack transitions between expanded (`true`) and collapsed (`false`). |
 
-### FanStackStyle
+### ProfileStackStyle
 
 | Property | Type | Default | Description |
 | :--- | :--- | :--- | :--- |

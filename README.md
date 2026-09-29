@@ -36,7 +36,7 @@ The goal is to recreate and craft the most beautiful, organic, and tactile micro
 | Preview | Component | Description |
 | :---: | :--- | :--- |
 | <img src="assets/previews/breathing_loader.png" width="260" alt="Breathing Loader" /> | [**Breathing Loader**](lib/animations/breathing_loader/breathing_loader.dart)<br><br>`3D Math` `Particles` `Perspective` | A transparent 3D particle sphere engineered with 170 Fibonacci-distributed points on a unit sphere. Features continuous dual-axis rotation, harmonic radial breathing expansion, perspective projection, depth-sorted alpha blending, and seamless theme palettes.<br><br>[📖 View Documentation](lib/animations/breathing_loader/README.md) |
-| <img src="assets/previews/fan_stack.png" width="260" alt="Fan Stack" /> | [**Fan Stack**](lib/animations/fan_stack/fan_stack.dart)<br><br>Gestures Avatars Spring Controls | An interactive avatar group control that sits in an overlapping chain and springs open into a selectable horizontal fan with live scrubbing, floating capsule name tags, and an original Studio Ceramic palette.<br><br>[📖 View Documentation](lib/animations/fan_stack/README.md) |
+| <img src="assets/previews/profile_stack.png" width="260" alt="Profile Stack" /> | [**Profile Stack**](lib/animations/profile_stack/profile_stack.dart)<br><br>Gestures Avatars Spring Controls | An interactive avatar group control that sits in an overlapping chain and springs open into a selectable horizontal fan with live scrubbing, floating capsule name tags, and an original Studio Ceramic palette.<br><br>[📖 View Documentation](lib/animations/profile_stack/README.md) |
 | <img src="assets/previews/pacman_loader.png" width="260" alt="Pacman Loader" /> | [**Pacman Loader**](lib/animations/pacman_loader/pacman_loader.dart)<br><br>`Interactive` `Loader` `CustomPainter` | A retro-inspired, rhythmic loading indicator where Pacman munches glowing dots across a track. Features an interpolated live percentage counter, adaptive light/dark colors, and zero external packages.<br><br>[📖 View Documentation](lib/animations/pacman_loader/README.md) |
 | <img src="assets/previews/spring_text.png" width="260" alt="Spring Text" /> | [**Spring Text**](lib/animations/spring_text/spring_text.dart)<br><br>`Gestures` `Physics` `SpringSimulation` | A tactile line of text that bends along a natural catenary curve under vertical drag gestures and snaps back with authentic spring physics upon release. Supports gesture interruptibility mid-flight and dynamic typography scaling.<br><br>[📖 View Documentation](lib/animations/spring_text/README.md) |
 
@@ -105,8 +105,8 @@ flutter_craft/
 │   │   ├── breathing_loader/
 │   │   │   ├── breathing_loader.dart  # 🌟 Single-file drop-in
 │   │   │   └── README.md
-│   │   ├── fan_stack/
-│   │   │   ├── fan_stack.dart         # 🌟 Single-file drop-in
+│   │   ├── profile_stack/
+│   │   │   ├── profile_stack.dart         # 🌟 Single-file drop-in
 │   │   │   └── README.md
 │   │   ├── pacman_loader/
 │   │   │   ├── pacman_loader.dart     # 🌟 Single-file drop-in
