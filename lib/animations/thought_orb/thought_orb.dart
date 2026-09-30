@@ -81,20 +81,28 @@ class ThoughtOrbPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final double radius = math.min(size.width, size.height) / 2 * 0.92;
+    if (radius <= 0) return;
     final Offset center = Offset(size.width / 2, size.height / 2);
 
     final Path clipPath = Path()..addOval(Rect.fromCircle(center: center, radius: radius));
     canvas.save();
     canvas.clipPath(clipPath);
 
+    // 1. Smoked Obsidian ground wash
     final Paint groundPaint = Paint()
       ..shader = RadialGradient(
-        colors: [palette.ground, const Color(0xFF090208)],
-        radius: 1.0,
+        colors: [
+          palette.ground,
+          palette.ground.withValues(alpha: 0.85),
+          const Color(0xFF090208),
+        ],
+        stops: const [0.0, 0.7, 1.0],
       ).createShader(Rect.fromCircle(center: center, radius: radius));
     canvas.drawCircle(center, radius, groundPaint);
 
+    // 2. Exact 4 Siri Wave Membranes travelling through equator
     const int kBands = 4;
+    const double kSpeed = 1.311;
     const double kSeparation = 2.05;
     const double kDetune = 0.05;
     const double kAmplitude = 0.266;
@@ -102,90 +110,167 @@ class ThoughtOrbPainter extends CustomPainter {
     const double kWidth = 0.115;
     const double kTaper = 1.75;
 
+    final double t = animationValue * math.pi * 2 * kSpeed;
+    final double drift = t * 2.4;
+    const double mid = (kBands - 1) * 0.5;
+
     for (int i = 0; i < kBands; i++) {
+      final double centred = i - mid;
+      final double amp = kAmplitude *
+          (1.0 - centred.abs() * kDetune * 1.1) *
+          (0.82 + 0.18 * math.sin(t * 0.48 + centred * 1.1));
+      final double freq = kFrequency * (1.0 + centred * kDetune);
+      final double phase = drift + centred * kSeparation;
+      final double bw = kWidth * (1.0 + centred.abs() * 0.55);
+
       final Color bandColor = palette.bands[i % palette.bands.length];
-      
-      final Paint bandPaint = Paint()
-        ..color = bandColor.withValues(alpha: 0.5)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = size.height * kWidth
-        ..blendMode = BlendMode.screen;
 
-      final Path bandPath = Path();
-      
-      final double width = size.width;
-      final double height = size.height;
+      final Path ribbonPath = Path();
+      final Path spinePath = Path();
+      const int steps = 60;
 
-      const int steps = 100;
-      for (int x = 0; x <= steps; x++) {
-        final double normalizedX = (x / steps) * 2 - 1; 
-        
-        // Envelope (1 - x^2)^1.75 pinching waves at the boundary
-        final double envelope = math.pow(math.max(0, 1 - normalizedX * normalizedX), kTaper).toDouble();
-        
-        final double phaseOffset = (i * kSeparation) + (animationValue * math.pi * 2);
-        final double detuneOffset = i * kDetune;
-        
-        final double wave = math.sin((normalizedX * kFrequency * math.pi * 2) + phaseOffset + detuneOffset);
-        
-        final double y = wave * envelope * kAmplitude * height;
-        
-        final double screenX = center.dx + (normalizedX * width / 2);
-        final double screenY = center.dy + y;
+      final List<Offset> upperPoints = [];
+      final List<Offset> lowerPoints = [];
+      final List<Offset> centerPoints = [];
 
-        if (x == 0) {
-          bandPath.moveTo(screenX, screenY);
-        } else {
-          bandPath.lineTo(screenX, screenY);
-        }
+      for (int s = 0; s <= steps; s++) {
+        final double px = (s / steps) * 2 - 1; // -1 to 1
+        final double env = math.pow(math.max(0.0, 1.0 - px * px), kTaper).toDouble();
+        final double wave = math.sin(px * freq * math.pi + phase);
+        final double centerY = env * amp * wave;
+        final double halfBw = (bw * 0.6) * env;
+
+        final double screenX = center.dx + px * radius;
+        final double upperY = center.dy - (centerY + halfBw) * radius;
+        final double lowerY = center.dy - (centerY - halfBw) * radius;
+        final double midY = center.dy - centerY * radius;
+
+        upperPoints.add(Offset(screenX, upperY));
+        lowerPoints.add(Offset(screenX, lowerY));
+        centerPoints.add(Offset(screenX, midY));
       }
-      
-      canvas.drawPath(bandPath, bandPaint);
 
-      if (i == 0) {
-        final Paint crestPaint = Paint()
-          ..color = palette.crest.withValues(alpha: 0.8)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.5
+      if (upperPoints.isNotEmpty) {
+        ribbonPath.moveTo(upperPoints[0].dx, upperPoints[0].dy);
+        for (int k = 1; k < upperPoints.length; k++) {
+          ribbonPath.lineTo(upperPoints[k].dx, upperPoints[k].dy);
+        }
+        for (int k = lowerPoints.length - 1; k >= 0; k--) {
+          ribbonPath.lineTo(lowerPoints[k].dx, lowerPoints[k].dy);
+        }
+        ribbonPath.close();
+
+        // Horizontal ribbon gradient with fade at ends
+        final Paint ribbonPaint = Paint()
+          ..shader = LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              bandColor.withValues(alpha: 0.0),
+              bandColor.withValues(alpha: 0.75),
+              bandColor.withValues(alpha: 0.85),
+              bandColor.withValues(alpha: 0.0),
+            ],
+            stops: const [0.0, 0.3, 0.7, 1.0],
+          ).createShader(Rect.fromCircle(center: center, radius: radius))
           ..blendMode = BlendMode.screen;
-        canvas.drawPath(bandPath, crestPaint);
+
+        canvas.drawPath(ribbonPath, ribbonPaint);
+
+        // Center spine stroke
+        spinePath.moveTo(centerPoints[0].dx, centerPoints[0].dy);
+        for (int k = 1; k < centerPoints.length; k++) {
+          spinePath.lineTo(centerPoints[k].dx, centerPoints[k].dy);
+        }
+
+        final Paint spinePaint = Paint()
+          ..color = bandColor.withValues(alpha: 0.9)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = math.max(1.2, radius * 0.04)
+          ..blendMode = BlendMode.screen;
+
+        canvas.drawPath(spinePath, spinePaint);
       }
     }
 
-    final Paint glowPaint = Paint()
-      ..shader = RadialGradient(
-        colors: [const Color(0x66FFFAEB), Colors.transparent],
-        radius: 0.6,
-      ).createShader(Rect.fromCircle(center: center, radius: radius))
-      ..blendMode = BlendMode.screen;
-    canvas.drawCircle(center, radius, glowPaint);
+    // 3. Thin white crest on the main sine wave
+    final Path crestPath = Path();
+    const int crestSteps = 60;
+    for (int s = 0; s <= crestSteps; s++) {
+      final double px = (s / crestSteps) * 2 - 1;
+      final double env = math.pow(math.max(0.0, 1.0 - px * px), kTaper).toDouble();
+      final double wave = math.sin(px * kFrequency * math.pi + drift);
+      final double centerY = env * kAmplitude * wave;
+      final double screenX = center.dx + px * radius;
+      final double screenY = center.dy - centerY * radius;
 
+      if (s == 0) {
+        crestPath.moveTo(screenX, screenY);
+      } else {
+        crestPath.lineTo(screenX, screenY);
+      }
+    }
+
+    final Paint crestPaint = Paint()
+      ..color = palette.crest.withValues(alpha: 0.75)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = math.max(1.0, radius * 0.025)
+      ..blendMode = BlendMode.screen;
+
+    canvas.drawPath(crestPath, crestPaint);
+
+    // 4. Central Luminous Core
+    final Paint coreGlow = Paint()
+      ..shader = RadialGradient(
+        colors: [
+          const Color(0x73FFFAF0),
+          palette.rimWarm.withValues(alpha: 0.25),
+          Colors.transparent,
+        ],
+        stops: const [0.0, 0.4, 1.0],
+      ).createShader(Rect.fromCircle(center: center, radius: radius * 0.85))
+      ..blendMode = BlendMode.screen;
+    canvas.drawCircle(center, radius, coreGlow);
+
+    // 5. Specular top-left glass reflection
+    final Offset specularCenter = Offset(
+      center.dx - radius * 0.35,
+      center.dy - radius * 0.40,
+    );
     final Paint specularPaint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Colors.white.withValues(alpha: 0.3), Colors.transparent],
-        stops: const [0.0, 0.4],
-      ).createShader(Rect.fromCircle(center: center, radius: radius));
+      ..shader = RadialGradient(
+        colors: [
+          Colors.white.withValues(alpha: 0.55),
+          Colors.white.withValues(alpha: 0.15),
+          Colors.transparent,
+        ],
+        stops: const [0.0, 0.5, 1.0],
+      ).createShader(Rect.fromCircle(center: specularCenter, radius: radius * 0.55));
     canvas.drawCircle(center, radius, specularPaint);
 
     canvas.restore();
 
+    // 6. Luminous Glass Rim
     final Paint rimPaint = Paint()
       ..shader = LinearGradient(
-        begin: Alignment.topRight,
-        end: Alignment.bottomLeft,
-        colors: [palette.rimWarm, palette.rimCool],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          palette.rimWarm,
+          Colors.white.withValues(alpha: 0.7),
+          palette.rimCool,
+        ],
+        stops: const [0.0, 0.5, 1.0],
       ).createShader(Rect.fromCircle(center: center, radius: radius))
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5;
+      ..strokeWidth = math.max(1.5, radius * 0.045);
     canvas.drawCircle(center, radius, rimPaint);
   }
 
   @override
   bool shouldRepaint(ThoughtOrbPainter oldDelegate) {
     return oldDelegate.animationValue != animationValue ||
-           oldDelegate.palette != palette;
+        oldDelegate.palette != palette;
   }
 }
 
