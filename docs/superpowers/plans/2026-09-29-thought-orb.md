@@ -15,7 +15,7 @@
 **Files:**
 - Create: `test/thought_orb_test.dart`
 
-- [ ] **Step 1: Write test suite in `test/thought_orb_test.dart`**
+- [x] **Step 1: Write test suite in `test/thought_orb_test.dart`**
   Covering:
   1. `ThoughtOrb` renders standalone with specified size (e.g. 28, 48, 96).
   2. `ThoughtOrb` CustomPaint painter properties (palette, progress, speed) reflect configurations.
@@ -24,11 +24,11 @@
   5. `ThoughtOrbPill` adapts background and ink tokens across Light and Dark brightness.
   6. Accessibility / reduced motion gracefully scales down animation speed.
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
   Run: `flutter test test/thought_orb_test.dart`
   Expected: FAIL with `Target of URI doesn't exist: 'package:flutter_craft/animations/thought_orb/thought_orb.dart'`
 
-- [ ] **Step 3: Commit test file**
+- [x] **Step 3: Commit test file**
   ```bash
   git add test/thought_orb_test.dart
   git commit -m "test(thought_orb): add comprehensive unit and widget tests"
@@ -41,11 +41,11 @@
 **Files:**
 - Create: `lib/animations/thought_orb/thought_orb.dart`
 
-- [ ] **Step 1: Implement `ThoughtOrbPalette` model and built-in presets**
+- [x] **Step 1: Implement `ThoughtOrbPalette` model and built-in presets**
   - Bands (4 colors), ground core, crest, rimWarm, rimCool.
   - Presets: `.solar` (default), `.siri`, `.ocean`, `.emerald`.
 
-- [ ] **Step 2: Implement `ThoughtOrbPainter` using exact Siri Wave math**
+- [x] **Step 2: Implement `ThoughtOrbPainter` using exact Siri Wave math**
   - Circular glass mask.
   - Smoked obsidian radial ground wash (`#1E0B19` $\to$ `#120610` $\to$ `#090208`).
   - 4 equatorial sinusoidal ribbons with $(1 - x^2)^{1.75}$ taper envelope, frequency detuning, amplitude modulation, and phase drift.
@@ -54,24 +54,24 @@
   - Off-center curved specular highlight.
   - Luminous dual-tone glass rim (`#FBBF24` $\to$ `#FB7185`).
 
-- [ ] **Step 3: Implement `ThoughtOrb` StatefulWidget**
+- [x] **Step 3: Implement `ThoughtOrb` StatefulWidget**
   - Ticker provider animation loop (`controller.repeat()`).
   - Support `size`, `palette`, `speed`, `animate`.
   - Handle reduced motion by scaling speed down to $0.15\times$.
 
-- [ ] **Step 4: Implement `ThoughtOrbPill` and `_PulsingDots`**
+- [x] **Step 4: Implement `ThoughtOrbPill` and `_PulsingDots`**
   - Rounded pill container with frosted backdrop filter and adaptive borders.
   - Embedded `ThoughtOrb(size: orbSize)`.
   - Status label typography with smooth theme adaptation.
   - 4 animated pulse dots with 0.15s staggered phase offsets.
   - Tap gesture callback and touch feedback.
 
-- [ ] **Step 5: Run tests and static analysis**
+- [x] **Step 5: Run tests and static analysis**
   Run: `flutter test test/thought_orb_test.dart`
   Run: `flutter analyze`
   Expected: All tests pass with 0 analyze issues.
 
-- [ ] **Step 6: Commit component implementation**
+- [x] **Step 6: Commit component implementation**
   ```bash
   git add lib/animations/thought_orb/thought_orb.dart
   git commit -m "feat(thought_orb): create self-contained ThoughtOrb and ThoughtOrbPill with exact Siri Wave optics"
@@ -84,24 +84,24 @@
 **Files:**
 - Modify: `lib/showcase/data/showcase_data.dart`
 
-- [ ] **Step 1: Register ThoughtOrb in `ShowcaseData.items`**
+- [x] **Step 1: Register ThoughtOrb in `ShowcaseData.items`**
   - Add `ShowcaseItem` with id `'thought-orb'`, title `'Thought Orb'`, subtitle `'Apple Intelligence Siri wave mark with frosted glass status pill'`.
   - Category: `'AI & Feedback'`.
   - Tags: `['ai', 'siri', 'wave', 'glow', 'pill', 'loader']`.
   - Full code snippet and interactive playground preview.
 
-- [ ] **Step 2: Build Interactive Playground controls for ThoughtOrb**
+- [x] **Step 2: Build Interactive Playground controls for ThoughtOrb**
   - Playground widget showcasing both:
     1. Hero Standalone Orb with Size slider (24px to 120px) and Speed slider.
     2. Interactive `ThoughtOrbPill` with preset actions ("Thinking", "Searching web", "Drafting reply", "Analyzing data").
     3. Palette selector (Solar Amber, Siri, Ocean, Emerald).
     4. Dark / Light mode instant preview.
 
-- [ ] **Step 3: Run static analysis and widget tests**
+- [x] **Step 3: Run static analysis and widget tests**
   Run: `flutter analyze && flutter test`
   Expected: All tests pass with 0 issues.
 
-- [ ] **Step 4: Commit showcase integration**
+- [x] **Step 4: Commit showcase integration**
   ```bash
   git add lib/showcase/data/showcase_data.dart
   git commit -m "feat(showcase): register ThoughtOrb and interactive playground in showcase catalog"
@@ -115,17 +115,17 @@
 - Create: `lib/animations/thought_orb/README.md`
 - Modify: `README.md`
 
-- [ ] **Step 1: Create `lib/animations/thought_orb/README.md`**
+- [x] **Step 1: Create `lib/animations/thought_orb/README.md`**
   - Overview, key features (exact Siri wave math, zero dependencies, copy-paste ready).
   - Quickstart examples for both `ThoughtOrb` and `ThoughtOrbPill`.
   - API Reference table with parameters, types, and defaults.
   - Custom palette guide.
 
-- [ ] **Step 2: Update root `README.md`**
+- [x] **Step 2: Update root `README.md`**
   - Add `ThoughtOrb` to the showcase component table.
   - Update component counter to 5.
 
-- [ ] **Step 3: Commit documentation**
+- [x] **Step 3: Commit documentation**
   ```bash
   git add lib/animations/thought_orb/README.md README.md
   git commit -m "docs(thought_orb): add component README and update root catalog"
