@@ -32,13 +32,35 @@ void main() {
     expect(painter.palette, equals(palette));
   });
 
-  testWidgets('ThoughtOrbPill renders orb, label text, and 4 pulsing dots', (WidgetTester tester) async {
+  testWidgets('ThoughtOrbPill renders orb, label text, and 3 loading dots', (WidgetTester tester) async {
     await tester.pumpWidget(const MaterialApp(home: Scaffold(body: ThoughtOrbPill(label: 'Thinking...'))));
     
     expect(find.byType(ThoughtOrb), findsOneWidget);
     expect(find.text('Thinking...'), findsOneWidget);
     
     expect(find.byKey(const Key('pulsing_dots')), findsOneWidget);
+  });
+
+  testWidgets('ThoughtOrbPill cycles through multiple labels over time', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: ThoughtOrbPill(
+            labels: ['Thinking', 'Searching', 'Searching sources', 'Drafting a reply'],
+            cycleInterval: Duration(milliseconds: 1000),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Thinking'), findsOneWidget);
+    expect(find.text('Searching'), findsNothing);
+
+    // Fast-forward past one cycle interval
+    await tester.pump(const Duration(milliseconds: 1050));
+    await tester.pump(const Duration(milliseconds: 350));
+
+    expect(find.text('Searching'), findsOneWidget);
   });
 
   testWidgets('ThoughtOrbPill triggers onTap callback when pressed', (WidgetTester tester) async {

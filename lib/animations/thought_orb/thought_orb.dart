@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
@@ -358,8 +359,10 @@ class _ThoughtOrbState extends State<ThoughtOrb> with SingleTickerProviderStateM
   }
 }
 
-class ThoughtOrbPill extends StatelessWidget {
-  final String label;
+class ThoughtOrbPill extends StatefulWidget {
+  final String? label;
+  final List<String>? labels;
+  final Duration cycleInterval;
   final double orbSize;
   final ThoughtOrbPalette palette;
   final VoidCallback? onTap;
@@ -368,48 +371,139 @@ class ThoughtOrbPill extends StatelessWidget {
 
   const ThoughtOrbPill({
     super.key,
-    required this.label,
+    this.label,
+    this.labels,
+    this.cycleInterval = const Duration(milliseconds: 2400),
     this.orbSize = 22.0,
     this.palette = ThoughtOrbPalette.solar,
     this.onTap,
     this.showDots = true,
     this.labelStyle,
-  });
+  }) : assert(
+          label != null || labels != null,
+          'Either label or labels must be provided',
+        );
+
+  @override
+  State<ThoughtOrbPill> createState() => _ThoughtOrbPillState();
+}
+
+class _ThoughtOrbPillState extends State<ThoughtOrbPill> {
+  Timer? _timer;
+  int _currentIndex = 0;
+
+  List<String> get _effectiveLabels {
+    if (widget.labels != null && widget.labels!.isNotEmpty) {
+      return widget.labels!;
+    }
+    if (widget.label != null) {
+      return [widget.label!];
+    }
+    return ['Thinking'];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimerIfNeeded();
+  }
+
+  @override
+  void didUpdateWidget(ThoughtOrbPill oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.labels != widget.labels ||
+        oldWidget.label != widget.label ||
+        oldWidget.cycleInterval != widget.cycleInterval) {
+      _timer?.cancel();
+      _currentIndex = 0;
+      _startTimerIfNeeded();
+    }
+  }
+
+  void _startTimerIfNeeded() {
+    final labels = _effectiveLabels;
+    if (labels.length > 1) {
+      _timer = Timer.periodic(widget.cycleInterval, (_) {
+        if (mounted) {
+          setState(() {
+            _currentIndex = (_currentIndex + 1) % labels.length;
+          });
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
-    
-    final Color bgColor = isDark ? const Color(0xFF0F0F12) : const Color(0xFFEEEAE3);
+
+    final Color bgColor =
+        isDark ? const Color(0xFF0F0F12) : const Color(0xFFEEEAE3);
+
+    final labels = _effectiveLabels;
+    final String currentText = labels[_currentIndex % labels.length];
 
     return Material(
       color: bgColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(999),
         side: BorderSide(
-          color: theme.dividerColor.withValues(alpha: 0.1),
+          color: theme.dividerColor.withValues(alpha: 0.12),
           width: 1,
         ),
       ),
       elevation: 2,
-      shadowColor: Colors.black12,
+      shadowColor: Colors.black.withValues(alpha: isDark ? 0.35 : 0.08),
       child: InkWell(
-        onTap: onTap,
+        onTap: widget.onTap,
         borderRadius: BorderRadius.circular(999),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ThoughtOrb(size: orbSize, palette: palette),
-              const SizedBox(width: 8),
-              Text(
-                label,
-                style: labelStyle ?? theme.textTheme.bodyMedium,
+              ThoughtOrb(size: widget.orbSize, palette: widget.palette),
+              const SizedBox(width: 9),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 320),
+                transitionBuilder: (child, animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0.0, 0.22),
+                        end: Offset.zero,
+                      ).animate(CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOutCubic,
+                      )),
+                      child: child,
+                    ),
+                  );
+                },
+                child: Text(
+                  currentText,
+                  key: ValueKey<String>(currentText),
+                  style: widget.labelStyle ??
+                      theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                        letterSpacing: -0.2,
+                        color: isDark
+                            ? const Color(0xFFF4F3EF)
+                            : const Color(0xFF1E1E24),
+                      ),
+                ),
               ),
-              if (showDots) ...[
-                const SizedBox(width: 8),
+              if (widget.showDots) ...[
+                const SizedBox(width: 6),
                 const _PulsingDots(key: Key('pulsing_dots')),
               ]
             ],
@@ -427,7 +521,8 @@ class _PulsingDots extends StatefulWidget {
   State<_PulsingDots> createState() => _PulsingDotsState();
 }
 
-class _PulsingDotsState extends State<_PulsingDots> with SingleTickerProviderStateMixin {
+class _PulsingDotsState extends State<_PulsingDots>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -435,7 +530,7 @@ class _PulsingDotsState extends State<_PulsingDots> with SingleTickerProviderSta
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1200),
     )..repeat();
   }
 
@@ -447,26 +542,46 @@ class _PulsingDotsState extends State<_PulsingDots> with SingleTickerProviderSta
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final dotColor =
+        isDark ? const Color(0xFFF4F3EF) : const Color(0xFF1E1E24);
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
         return Row(
           mainAxisSize: MainAxisSize.min,
-          children: List.generate(4, (index) {
-            final double phase = (index * 0.15) / 1.5;
-            double value = (_controller.value - phase) % 1.0;
-            if (value < 0) value += 1.0;
-            
-            final double opacity = 0.3 + 0.7 * (1.0 - (value * 2 - 1).abs());
-            
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: List.generate(3, (index) {
+            final double phase = index * 0.20;
+            final double t = (_controller.value - phase) % 1.0;
+            final double normalizedT = t < 0 ? t + 1.0 : t;
+
+            // Smooth active wave
+            final double activeFactor = normalizedT <= 0.5
+                ? math.sin(normalizedT * 2 * math.pi)
+                : 0.0;
+            final double clamped = math.max(0.0, activeFactor);
+
+            final double dy = -2.5 * clamped;
+            final double opacity = 0.30 + 0.70 * clamped;
+            final double scale = 0.85 + 0.25 * clamped;
+
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: Container(
-                width: 4,
-                height: 4,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Theme.of(context).iconTheme.color?.withValues(alpha: opacity) ?? Colors.black.withValues(alpha: opacity),
+              padding: const EdgeInsets.symmetric(horizontal: 1.5),
+              child: Transform.translate(
+                offset: Offset(0, dy),
+                child: Transform.scale(
+                  scale: scale,
+                  child: Container(
+                    width: 3.5,
+                    height: 3.5,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: dotColor.withValues(alpha: opacity),
+                    ),
+                  ),
                 ),
               ),
             );

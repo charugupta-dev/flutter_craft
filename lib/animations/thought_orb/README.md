@@ -22,7 +22,7 @@ Accompanied by `ThoughtOrbPill`, a frosted glass pill containing the orb, status
   - `ThoughtOrbPalette.siri` (Apple Intelligence: Cyan, Indigo, Magenta, Violet)
   - `ThoughtOrbPalette.ocean` (Azure, Teal, Blue, Cobalt)
   - `ThoughtOrbPalette.emerald` (Mint, Emerald, Lime, Forest)
-- **Status Pill Control (`ThoughtOrbPill`):** Frosted glass container with responsive tap interaction and 4 sequential phase-delayed pulsing dots.
+- **Status Pill Control (`ThoughtOrbPill`):** Frosted glass container with responsive tap interaction, 3 dynamic loading dots, and automatic state cycling across multiple labels.
 - **Accessibility & Reduced Motion:** Automatically detects `MediaQuery.disableAnimationsOf(context)` and scales down speed to a calm, subtle oscillation.
 
 ---
@@ -36,20 +36,32 @@ import 'thought_orb.dart';
 
 // 1. Hero Standalone Orb
 ThoughtOrb(
-  size: 96,
+  size: 160,
   palette: ThoughtOrbPalette.solar,
   speed: 1.0,
 );
 
-// 2. Frosted Glass Status Pill
+// 2. Frosted Glass Status Pill with Cycling States
 ThoughtOrbPill(
-  label: 'Thinking...',
+  labels: const [
+    'Thinking',
+    'Searching',
+    'Searching sources',
+    'Drafting a reply',
+  ],
+  orbSize: 22,
+  palette: ThoughtOrbPalette.solar,
+);
+
+// 3. Static Status Pill
+ThoughtOrbPill(
+  label: 'Thinking',
   orbSize: 22,
   palette: ThoughtOrbPalette.solar,
   onTap: () => print('Pill tapped'),
 );
 
-// 3. Custom Color Palette
+// 4. Custom Color Palette
 ThoughtOrb(
   size: 64,
   palette: ThoughtOrbPalette(
@@ -75,7 +87,7 @@ ThoughtOrb(
 
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `size` | `double` | `28.0` | Diameter of the orb in points (e.g. 22–28 inside a pill, 64–120 at hero size). |
+| `size` | `double` | `28.0` | Diameter of the orb in points (e.g. 22–28 inside a pill, 64–160 at hero size). |
 | `palette` | `ThoughtOrbPalette` | `ThoughtOrbPalette.solar` | Color scheme for wave bands, ground core, crest, and rim. |
 | `speed` | `double` | `1.0` | Animation speed multiplier (1.0 = ~4.0s cycle). |
 | `animate` | `bool` | `true` | Whether the wave animation is actively running. |
@@ -84,11 +96,13 @@ ThoughtOrb(
 
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `label` | `String` | *required* | Status label text (e.g. "Thinking", "Searching web", "Drafting reply"). |
+| `label` | `String?` | `null` | Single static status label text (e.g. "Thinking"). |
+| `labels` | `List<String>?` | `null` | List of status labels to cycle through automatically with smooth animated transitions. |
+| `cycleInterval` | `Duration` | `2400ms` | Duration spent on each label before transitioning to the next. |
 | `orbSize` | `double` | `22.0` | Diameter of the embedded `ThoughtOrb`. |
 | `palette` | `ThoughtOrbPalette` | `ThoughtOrbPalette.solar` | Palette passed to the embedded orb. |
 | `onTap` | `VoidCallback?` | `null` | Optional tap callback. |
-| `showDots` | `bool` | `true` | Whether to display the 4 sequential pulsing dots. |
+| `showDots` | `bool` | `true` | Whether to display the 3 animated loading dots. |
 | `labelStyle` | `TextStyle?` | `null` | Optional custom text style for the status label. |
 
 ### ThoughtOrbPalette
